@@ -9,11 +9,13 @@ ADieActor::ADieActor()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	DefaultRoot = CreateDefaultSubobject<USceneComponent>(TEXT("DefaultRoot"));
-	SetRootComponent(DefaultRoot);
+	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("DefaultRoot"));
+	RootComponent = Mesh;
+	Mesh->OnComponentHit.AddDynamic(this, &ADieActor::OnHit);
 
-	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
-	Mesh->SetupAttachment(RootComponent);
+	AudioComponent = CreateDefaultSubobject<UAudioComponent>(TEXT("Audio"));
+	AudioComponent->SetupAttachment(Mesh);
+	AudioComponent->bAutoActivate = false;
 
 }
 
@@ -23,8 +25,10 @@ void ADieActor::BeginPlay()
 	Super::BeginPlay();
 
 	GetComponents(Faces);
+
+	AudioComponent->SetSound(ImpactSFX);
 	
-	UE_LOG(LogTemp, Warning, TEXT("Face Count: %d"), Faces.Num());
+	//UE_LOG(LogTemp, Warning, TEXT("Face Count: %d"), Faces.Num());
 
 }
 
@@ -44,7 +48,7 @@ void ADieActor::Tick(float DeltaTime)
 	{
 		bIsThrown = false;
 		FindDiceResult();
-		UE_LOG(LogTemp, Warning, TEXT("Dice Result: %d"), Result);
+		//UE_LOG(LogTemp, Warning, TEXT("Dice Result: %d"), Result);
 	}
 	
 }
@@ -55,7 +59,7 @@ void ADieActor::FindDiceResult()
 	int upFace = -1;
 	for (int i = 0; i < Faces.Num(); i++)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Face id: %d value: %d Z: %f"), i, Faces[i]->Value, Faces[i]->GetComponentLocation().Z);
+		//UE_LOG(LogTemp, Warning, TEXT("Face id: %d value: %d Z: %f"), i, Faces[i]->Value, Faces[i]->GetComponentLocation().Z);
 		if (Faces[i]->GetComponentLocation().Z > maxVal)
 		{
 			maxVal = Faces[i]->GetComponentLocation().Z;
@@ -82,3 +86,13 @@ void ADieActor::Throw()
 	bIsStartedRolling = false;
 }
 
+void ADieActor::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
+{
+	if (GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 0.5f, FColor::White, TEXT("Dice Hit!!!"));
+	}
+
+	UE_LOG(LogTemp, Warning, TEXT("Dice Hit Somewhere"));
+	AudioComponent->Play();
+}

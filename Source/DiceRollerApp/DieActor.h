@@ -5,7 +5,10 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "DieFaceComponent.h"
+#include "Sound/SoundCue.h"
+#include "Components/AudioComponent.h"
 #include "DieActor.generated.h"
+
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDieResultChangedSignature, FString, DieResult);
 
@@ -25,9 +28,6 @@ UCLASS()
 class DICEROLLERAPP_API ADieActor : public AActor
 {
 	GENERATED_BODY()
-
-	UPROPERTY(EditAnywhere)
-	USceneComponent* DefaultRoot = nullptr;
 
 	bool bIsThrown = false;
 	bool bIsStartedRolling = false;
@@ -51,6 +51,12 @@ public:
 	UPROPERTY(Category = Gameplay, EditAnywhere)
 	EDiceType DiceType;
 
+	UPROPERTY(EditAnywhere, Category = "Audio")
+	TObjectPtr<USoundCue> ImpactSFX;
+
+	UPROPERTY(EditAnywhere, Category = "Audio")
+	TObjectPtr<UAudioComponent> AudioComponent;
+
 	UPROPERTY(Category = Gameplay, VisibleAnywhere)
 	int Result = -1;
 
@@ -70,5 +76,8 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	void Throw();
+
+	UFUNCTION(BlueprintCallable)
+	void OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 
 };
