@@ -37,6 +37,8 @@ void ADieActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	if (SfxBufferTime > 0) SfxBufferTime -= DeltaTime;
+
 	if (!bIsThrown) return;
 
 	if (!bIsStartedRolling && Mesh->GetComponentVelocity().Length() > 0)
@@ -88,11 +90,7 @@ void ADieActor::Throw()
 
 void ADieActor::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
-	if (GEngine)
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 0.5f, FColor::White, TEXT("Dice Hit!!!"));
-	}
-
-	UE_LOG(LogTemp, Warning, TEXT("Dice Hit Somewhere"));
+	if (SfxBufferTime > 0) return;
+	SfxBufferTime = 1.2;
 	AudioComponent->Play();
 }

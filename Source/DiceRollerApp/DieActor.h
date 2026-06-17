@@ -31,6 +31,7 @@ class DICEROLLERAPP_API ADieActor : public AActor
 
 	bool bIsThrown = false;
 	bool bIsStartedRolling = false;
+	float SfxBufferTime;
 
 	void FindDiceResult();
 
@@ -52,7 +53,7 @@ public:
 	EDiceType DiceType;
 
 	UPROPERTY(EditAnywhere, Category = "Audio")
-	TObjectPtr<USoundCue> ImpactSFX;
+	TObjectPtr<USoundBase> ImpactSFX;
 
 	UPROPERTY(EditAnywhere, Category = "Audio")
 	TObjectPtr<UAudioComponent> AudioComponent;
