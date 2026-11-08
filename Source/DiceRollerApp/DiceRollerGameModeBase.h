@@ -20,6 +20,9 @@ class DICEROLLERAPP_API ADiceRollerGameModeBase : public AGameModeBase
 	UPROPERTY(EditAnywhere)
 	TArray<ADieActor*> DiceTray;
 
+	UPROPERTY(EditAnywhere)
+	bool bIsSoundOn;
+
 protected:
 	UPROPERTY(Category = Gameplay, EditAnywhere, BlueprintReadWrite)
 	TSubclassOf<class ADieActor> D4Class;
@@ -65,4 +68,10 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void RerollAll();
+
+	UFUNCTION(BlueprintCallable)
+	void SetSound(bool value);
+
+	UFUNCTION(BlueprintCallable)
+	bool IsSoundOn();
 };

@@ -17,6 +17,7 @@ void ADiceRollerGameModeBase::BeginPlay()
 		MyGameSettings->ApplySettings(true);
 	}
 
+	bIsSoundOn = true;
 	FActorSpawnParameters SpawnParams;
 	APlayerController* PC = Cast<APlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
 	ADiceRollerHUD* HUD = PC->GetHUD<ADiceRollerHUD>();
@@ -107,6 +108,16 @@ void ADiceRollerGameModeBase::RerollAll()
 	{
 		DiceTray[i]->Throw();
 	}
+}
+
+void ADiceRollerGameModeBase::SetSound(bool value)
+{
+	bIsSoundOn = value;
+}
+
+bool ADiceRollerGameModeBase::IsSoundOn()
+{
+	return bIsSoundOn;
 }
 
 void ADiceRollerGameModeBase::ClearDiceTray()

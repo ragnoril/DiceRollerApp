@@ -2,6 +2,7 @@
 
 
 #include "DieActor.h"
+#include "DiceRollerGameModeBase.h"
 
 // Sets default values
 ADieActor::ADieActor()
@@ -93,9 +94,10 @@ void ADieActor::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimiti
 	GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Cyan, OtherActor->GetFullName());
 	if (SfxBufferTime > 0) return;
 	SfxBufferTime = SfxBufflerTimeValue;
-	UE_LOG(LogTemp, Warning, TEXT("OnHit Velocity Len: %f"), Mesh->GetComponentVelocity().Length());
 	if (bIsStartedRolling && (OtherActor != nullptr) && Mesh->GetComponentVelocity().Length() > SfxCutoffValue)
 	{
+		ADiceRollerGameModeBase* GameMode = (ADiceRollerGameModeBase*)GetWorld()->GetAuthGameMode();
+		if (!GameMode->IsSoundOn()) return;
 		AudioComponent->Play();
 	}
 

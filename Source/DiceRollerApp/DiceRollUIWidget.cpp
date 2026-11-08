@@ -18,6 +18,9 @@ void UDiceRollUIWidget::NativeConstruct()
 
 	Button_Reroll->OnClicked.AddDynamic(this, &UDiceRollUIWidget::Reroll);
 	Button_Clear->OnClicked.AddDynamic(this, &UDiceRollUIWidget::ClearDices);
+
+	Button_MusicOn->OnClicked.AddDynamic(this, &UDiceRollUIWidget::SetMusicOff);
+	Button_MusicOff->OnClicked.AddDynamic(this, &UDiceRollUIWidget::SetMusicOn);
 }
 
 void UDiceRollUIWidget::ThrowD4()
@@ -83,5 +86,21 @@ void UDiceRollUIWidget::UpdateResults(FString value)
 	FText newText = FText::FromString(text);
 	ResultText->SetText(newText);
 	ScrollBoxResult->ScrollToEnd();
+}
+
+void UDiceRollUIWidget::SetMusicOn()
+{
+	Button_MusicOff->SetVisibility(ESlateVisibility::Collapsed);
+	Button_MusicOn->SetVisibility(ESlateVisibility::Visible);
+	ADiceRollerGameModeBase* GameMode = (ADiceRollerGameModeBase*)GetWorld()->GetAuthGameMode();
+	GameMode->SetSound(true);
+}
+
+void UDiceRollUIWidget::SetMusicOff()
+{
+	Button_MusicOn->SetVisibility(ESlateVisibility::Collapsed);
+	Button_MusicOff->SetVisibility(ESlateVisibility::Visible);
+	ADiceRollerGameModeBase* GameMode = (ADiceRollerGameModeBase*)GetWorld()->GetAuthGameMode();
+	GameMode->SetSound(false);
 }
 

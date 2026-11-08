@@ -48,6 +48,11 @@ public:
 	UFUNCTION()
 	void UpdateResults(FString value);
 
+	UFUNCTION()
+	void SetMusicOn();
+
+	UFUNCTION()
+	void SetMusicOff();
 
 protected:
 	UPROPERTY(EditAnywhere, meta = (BindWidget))
@@ -79,5 +84,11 @@ protected:
 
 	UPROPERTY(EditAnywhere, meta = (BindWidget))
 	TObjectPtr<UScrollBox> ScrollBoxResult;
+
+	UPROPERTY(EditAnywhere, meta = (BindWidget))
+	TObjectPtr<UButton> Button_MusicOn;
+
+	UPROPERTY(EditAnywhere, meta = (BindWidget))
+	TObjectPtr<UButton> Button_MusicOff;
 
 };
