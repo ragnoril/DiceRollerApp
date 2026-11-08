@@ -70,6 +70,12 @@ public:
 	UPROPERTY(Category = Gameplay, EditAnywhere)
 	int ThrowImpulseForce = 100;
 
+	UPROPERTY(Category = "Audio", EditAnywhere)
+	float SfxCutoffValue = 0.1;
+
+	UPROPERTY(Category = "Audio", EditAnywhere)
+	float SfxBufflerTimeValue = 0.85;
+
 	// Sets default values for this actor's properties
 	ADieActor();
 

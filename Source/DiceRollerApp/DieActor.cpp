@@ -90,7 +90,12 @@ void ADieActor::Throw()
 
 void ADieActor::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
+	GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Cyan, OtherActor->GetFullName());
 	if (SfxBufferTime > 0) return;
-	SfxBufferTime = 1.2;
-	AudioComponent->Play();
+	SfxBufferTime = SfxBufflerTimeValue;
+	if (bIsStartedRolling && (OtherActor != nullptr) && Mesh->GetComponentVelocity().Length() > SfxCutoffValue)
+	{
+		AudioComponent->Play();
+	}
+
 }
