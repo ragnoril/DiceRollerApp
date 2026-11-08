@@ -71,7 +71,7 @@ public:
 	int ThrowImpulseForce = 100;
 
 	UPROPERTY(Category = "Audio", EditAnywhere)
-	float SfxCutoffValue = 0.1;
+	float SfxCutoffValue = 100.0;
 
 	UPROPERTY(Category = "Audio", EditAnywhere)
 	float SfxBufflerTimeValue = 0.85;

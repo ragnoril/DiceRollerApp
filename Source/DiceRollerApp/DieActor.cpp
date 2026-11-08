@@ -93,6 +93,7 @@ void ADieActor::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimiti
 	GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Cyan, OtherActor->GetFullName());
 	if (SfxBufferTime > 0) return;
 	SfxBufferTime = SfxBufflerTimeValue;
+	UE_LOG(LogTemp, Warning, TEXT("OnHit Velocity Len: %f"), Mesh->GetComponentVelocity().Length());
 	if (bIsStartedRolling && (OtherActor != nullptr) && Mesh->GetComponentVelocity().Length() > SfxCutoffValue)
 	{
 		AudioComponent->Play();
