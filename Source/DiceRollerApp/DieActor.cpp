@@ -54,12 +54,12 @@ void ADieActor::Tick(float DeltaTime)
 
 	if (!bIsThrown) return;
 
-	if (!bIsStartedRolling && Mesh->GetComponentVelocity().Length() > 0)
+	if (!bIsStartedRolling && Mesh->GetComponentVelocity().Length() > 0.1)
 	{
 		bIsStartedRolling = true;
 	}
 
-	if (bIsStartedRolling && Mesh->GetComponentVelocity().Length() == 0)
+	if (bIsStartedRolling && Mesh->GetComponentVelocity().Length() < 0.1)
 	{
 		bIsThrown = false;
 		FindDiceResult();
