@@ -14,10 +14,18 @@ ADieActor::ADieActor()
 	RootComponent = Mesh;
 	Mesh->OnComponentHit.AddDynamic(this, &ADieActor::OnHit);
 
+	ResultWidgetComp = CreateDefaultSubobject<UWidgetComponent>(TEXT("ResultTextUI"));
+	ResultWidgetComp->SetupAttachment(Mesh);
+
 	AudioComponent = CreateDefaultSubobject<UAudioComponent>(TEXT("Audio"));
 	AudioComponent->SetupAttachment(Mesh);
 	AudioComponent->bAutoActivate = false;
 
+}
+
+void ADieActor::UpdateDiceResultWidget(FString value)
+{
+	if (ResultUI != nullptr) ResultUI->UpdateResult(value);
 }
 
 // Called when the game starts or when spawned
@@ -27,10 +35,14 @@ void ADieActor::BeginPlay()
 
 	GetComponents(Faces);
 
-	AudioComponent->SetSound(ImpactSFX);
-	
-	//UE_LOG(LogTemp, Warning, TEXT("Face Count: %d"), Faces.Num());
+	ResultUI = Cast<UDiceResultUIWidget>(ResultWidgetComp->GetWidget());
+	ResultUI->HideResult();
 
+	//this->OnDieResultChangedDelegate.AddUniqueDynamic(this, &ADieActor::UpdateDiceResultWidget);
+
+	AudioComponent->SetSound(ImpactSFX);
+
+	//UE_LOG(LogTemp, Warning, TEXT("Face Count: %d"), Faces.Num());
 }
 
 // Called every frame
@@ -76,6 +88,7 @@ void ADieActor::FindDiceResult()
 		FString diceName = UEnum::GetDisplayValueAsText(DiceType).ToString();
 		FString str = FString::Printf(TEXT("%s: %d\n"), *diceName, Result);
 		OnDieResultChangedDelegate.Broadcast(str);
+		this->UpdateDiceResultWidget(str);
 	}
 }
 
@@ -84,6 +97,8 @@ void ADieActor::Throw()
 	Mesh->AddForce(FVector::ForwardVector * ThrowForwardForce * Mesh->GetMass());
 	Mesh->AddForce(FVector::UpVector * ThrowUpForce * Mesh->GetMass());
 	Mesh->AddImpulse(Mesh->GetForwardVector() * ThrowImpulseForce * Mesh->GetMass());
+
+	if (ResultUI != nullptr) ResultUI->HideResult();
 	
 	bIsThrown = true;
 	bIsStartedRolling = false;

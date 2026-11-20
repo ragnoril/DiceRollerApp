@@ -6,7 +6,9 @@
 #include "GameFramework/Actor.h"
 #include "DieFaceComponent.h"
 #include "Sound/SoundCue.h"
+#include "Components/WidgetComponent.h"
 #include "Components/AudioComponent.h"
+#include "DiceResultUIWidget.h"
 #include "DieActor.generated.h"
 
 
@@ -41,6 +43,14 @@ protected:
 
 	UPROPERTY(Category = Gameplay, EditAnywhere, BlueprintReadWrite)
 	TArray<UDieFaceComponent*> Faces;
+
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<class UWidgetComponent> ResultWidgetComp;
+
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<class UDiceResultUIWidget> ResultUI;
+
+	void UpdateDiceResultWidget(FString value);
 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
