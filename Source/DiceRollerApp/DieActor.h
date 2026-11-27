@@ -86,6 +86,9 @@ public:
 	UPROPERTY(Category = "Audio", EditAnywhere)
 	float SfxBufflerTimeValue = 0.85;
 
+	UPROPERTY(Category = Gameplay, VisibleAnywhere)
+	bool bShowOverheadResultUI = true;
+
 	// Sets default values for this actor's properties
 	ADieActor();
 

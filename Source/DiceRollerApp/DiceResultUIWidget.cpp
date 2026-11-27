@@ -7,6 +7,7 @@ void UDiceResultUIWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
 	ValueTextWidget->SetText(FText::FromString(""));
+	HideResult();
 }
 
 void UDiceResultUIWidget::UpdateResult(FString value)

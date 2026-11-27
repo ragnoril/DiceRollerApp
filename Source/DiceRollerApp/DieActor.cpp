@@ -25,6 +25,7 @@ ADieActor::ADieActor()
 
 void ADieActor::UpdateDiceResultWidget(FString value)
 {
+	if (!bShowOverheadResultUI) return;
 	if (ResultUI != nullptr) ResultUI->UpdateResult(value);
 }
 
@@ -36,7 +37,6 @@ void ADieActor::BeginPlay()
 	GetComponents(Faces);
 
 	ResultUI = Cast<UDiceResultUIWidget>(ResultWidgetComp->GetWidget());
-	ResultUI->HideResult();
 
 	//this->OnDieResultChangedDelegate.AddUniqueDynamic(this, &ADieActor::UpdateDiceResultWidget);
 
